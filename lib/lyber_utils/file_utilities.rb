@@ -136,32 +136,34 @@ module LyberUtils
       Dir.chdir(dir_save)
     end
 
-      # Verifies MD5 checksums for the files in a directory
-      # against the checksum values in the supplied file
-      # (Uses md5sum command)
+      # Tars a directory hierarchy
       #
       # = Inputs:
-      # * directory = dirname containing the file to be checked
-      # * checksum_file = the name of the file containing the expected checksums
+      # * source_path = the filesystem object to be tarred
+      # * dest_path = name of the tar file to be written
+      #     (if nil create sourcname.tar in the same dir as the source object)
       #
       # = Return value:
-      # * The method will return true if the verification is successful.
-      # * The method will raise an exception if either the md5sum command fails,
-      # or a test of the md5sum output indicates a checksum mismatch.
-      # The exception's message will contain the explaination of the failure.
-    def FileUtilities.verify_checksums(directory, checksum_file)
-#      LyberCore::Log.debug("verifying checksums in #{directory}")
-      dir_save = Dir.pwd
-      Dir.chdir(directory)
-      checksum_cmd = 'md5sum -c ' + checksum_file + ' | grep -v OK | wc -l'
-      badcount = self.execute(checksum_cmd).to_i
-      if not (badcount==0)
-        raise "#{badcount} files had bad checksums"
+      # * The method will return true if the transfer is successful.
+      # * The method will raise an exception if either the rsync command fails,
+      # or a test for the existence of the transferred object fails.
+      # The exception's message will contain the explaination of the failure
+      #
+      def FileUtilities.tar_object(source_path, dest_path=nil)
+        if (dest_path.nil?)
+            dest_path = source_path + ".tar"
+        end
+        parent_path = File.dirname(source_path)
+        object_name = File.basename(source_path)
+        tar="cd #{parent_path}; tar --force-local -chf "
+        tar_cmd = "#{tar} '#{dest_path}' '#{object_name}'"
+        self.execute(tar_cmd)
+        if not File.exists?(dest_path)
+          raise "#{dest_path} was not created"
+        end
+        return true
       end
-      return true
-    ensure
-      Dir.chdir(dir_save)
-    end
+
   end
 
 end

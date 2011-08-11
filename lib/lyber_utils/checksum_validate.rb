@@ -1,34 +1,31 @@
 require 'nokogiri'
-
-# rails / activesupport / lib / active_support / core_ext / hash / diff.rb
-class Hash
-  # Returns a hash that represents the difference between two hashes.
-  #
-  # Examples:
-  #
-  #   {1 => 2}.diff(1 => 2)         # => {}
-  #   {1 => 2}.diff(1 => 3)         # => {1 => 2}
-  #   {}.diff(1 => 2)               # => {1 => 2}
-  #   {1 => 2, 3 => 4}.diff(1 => 2) # => {3 => 4}
-  def diff(h2)
-    dup.delete_if { |k, v| h2[k] == v }.merge!(h2.dup.delete_if { |k, v| has_key?(k) })
-  end
-end
+require './file_utilities'
 
 
 module LyberUtils
 
   class ChecksumValidate
-    #Code here
 
+    # Test the equality of two hashes
+    # @return [Boolean]
     def self.compare_hashes(hash1, hash2)
       return (hash1 == hash2)
     end
 
+    # create a new hash containing:
+    # entries from hash1 where:
+    # * key is in hash1 but missing from hash2
+    # * value is different in the two hashes
+    # entries from hash2 where:
+    # * key is in hash2 but missing from hash1
+    # @return [Hash]
     def self.get_hash_differences(hash1, hash2)
-      return hash1.diff(hash2)
+      hash1.reject { |k, v| hash2[k] == v }.merge!(hash2.reject { |k, v| hash1.has_key?(k) })
     end
 
+    # Generate a filename => checksum hash
+    # from an output of the md5sum (or compatible) program
+    # @return [Hash]
     def self.md5_hash_from_md5sum(md5sum)
       checksum_hash = {}
       md5sum.each do |line|
@@ -39,6 +36,9 @@ module LyberUtils
       return checksum_hash
     end
 
+    # Generate a filename => checksum hash
+    # from the contents of a METS file
+    # @return [Hash]
     def self.md5_hash_from_mets(mets)
       mets_checksum_hash = {}
       doc = Nokogiri::XML(mets)
@@ -57,6 +57,9 @@ module LyberUtils
       return mets_checksum_hash
     end
 
+    # Generate a filename => checksum hash
+    # from contentMetadata XML
+    # @return [Hash]
     def self.md5_hash_from_content_metadata(content_md)
       content_md_checksum_hash = {}
       doc = Nokogiri::XML(content_md)
@@ -73,8 +76,35 @@ module LyberUtils
         end
       end
       return content_md_checksum_hash
-
     end
+
+      # Verifies MD5 checksums for the files in a directory
+      # against the checksum values in the supplied file
+      # (Uses md5sum command)
+      #
+      # = Inputs:
+      # * directory = dirname containing the file to be checked
+      # * checksum_file = the name of the file containing the expected checksums
+      #
+      # = Return value:
+      # * The method will return true if the verification is successful.
+      # * The method will raise an exception if either the md5sum command fails,
+      # or a test of the md5sum output indicates a checksum mismatch.
+      # The exception's message will contain the explaination of the failure.
+    def self.verify_md5sum_checksums(directory, checksum_file)
+#      LyberCore::Log.debug("verifying checksums in #{directory}")
+      dir_save = Dir.pwd
+      Dir.chdir(directory)
+      checksum_cmd = 'md5sum -c ' + checksum_file + ' | grep -v OK | wc -l'
+      badcount = FileUtilities.execute(checksum_cmd).to_i
+      if not (badcount==0)
+        raise "#{badcount} files had bad checksums"
+      end
+      return true
+    ensure
+      Dir.chdir(dir_save)
+    end
+
   end
 
 end

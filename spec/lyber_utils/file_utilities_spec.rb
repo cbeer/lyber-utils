@@ -1,5 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-require 'lyber_utils/file_utilities'
+require 'lyber-utils'
 
 describe LyberUtils::FileUtilities do
 
@@ -76,17 +76,5 @@ describe LyberUtils::FileUtilities do
     end
   end
 
-  describe "verify_checksums" do
-    it "should successfully verify checksums" do
-      directory = "mydir"
-      checksum_file = "md5file"
-      checksum_cmd = "md5sum -c md5file | grep -v OK | wc -l"
-      dir_save = Dir.pwd
-      Dir.should_receive(:chdir).with(directory)
-      LyberUtils::FileUtilities.should_receive(:execute).with(checksum_cmd).and_return("0")
-      Dir.should_receive(:chdir).with(dir_save)
-      LyberUtils::FileUtilities.verify_checksums(directory, checksum_file).should == true
-    end
-  end
-  
+
 end

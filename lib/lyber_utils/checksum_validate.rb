@@ -1,5 +1,4 @@
 require 'nokogiri'
-require './file_utilities'
 
 
 module LyberUtils

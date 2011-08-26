@@ -6,8 +6,14 @@ module LyberUtils
 
   class BagitBag
 
+    attr_reader :bag_dir
+
     def initialize(bag_dir)
       @bag_dir = bag_dir
+      @bag = BagIt::Bag.new @bag_dir
+    end
+
+    def reset()
       if (File.exist?(@bag_dir))
         FileUtils.rm_r(@bag_dir)
       end
@@ -49,7 +55,8 @@ module LyberUtils
       payload = bag_payload()
       bag_info_hash = {
           'Bag-Size' => bag_size_human(payload[0]),
-          'Payload-Oxum' => "#{payload[0]}.#{payload[1]}"
+          'Payload-Oxum' => "#{payload[0]}.#{payload[1]}",
+          'Bagging-Date' => DateTime.now.to_s[0..9]
       }
       @bag.write_bag_info(md_hash.merge(bag_info_hash))
     end

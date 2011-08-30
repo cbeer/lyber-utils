@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   
   # Bundler will install these gems too if you've checked out lyber-utils source from git and run 'bundle install'
   # It will not add these as dependencies if you require lyber-utils for other projects
-  s.add_development_dependency "lyberteam-devel", ">=0.1.1"
+  s.add_development_dependency "lyberteam-devel", ">=0.4.1"
   s.add_development_dependency "rake", ">=0.8.7"
   s.add_development_dependency "rcov"
   s.add_development_dependency "rdoc"

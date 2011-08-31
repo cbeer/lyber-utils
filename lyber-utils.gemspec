@@ -4,7 +4,7 @@ $:.unshift lib unless $:.include?(lib)
   
 Gem::Specification.new do |s|
   s.name        = "lyber-utils"
-  s.version     = "0.1.0"
+  s.version     = "0.1.1"
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Richard Anderson","Willy Mene","Michael Klein"]
   s.email       = ["rnanders@stanford.edu"]
@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   
   # Runtime dependencies
   s.add_dependency "bagit", ">=0.1.0"
-  s.add_dependency "nokogiri", "=1.4.3.1"
+  s.add_dependency "nokogiri", ">=1.4.3.1"
   s.add_dependency "systemu", ">= 1.2.0"
   s.add_dependency "validatable"
   

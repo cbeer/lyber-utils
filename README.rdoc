@@ -24,6 +24,7 @@ for more details
 == Releases
 - <b>1.3</b> Started to use Dor::Config for workspace configuration
 - <b>0.1.1</b> Update dependent version of nokogiri for more flexibility
+- <b>0.1.2</b> Ensure bag begins with an empty directory.  Disallow nil values in bag-info.txt properties
 
 == Copyright
 

@@ -10,10 +10,10 @@ module LyberUtils
 
     def initialize(bag_dir)
       @bag_dir = bag_dir
-      @bag = BagIt::Bag.new @bag_dir
+      create_bag
     end
 
-    def reset()
+    def create_bag()
       if (File.exist?(@bag_dir))
         FileUtils.rm_r(@bag_dir)
       end
@@ -34,9 +34,9 @@ module LyberUtils
           if File.directory?(source_file)
             copy_dir(source_file, target_file, use_links)
           elsif (use_links)
-            File.link(source_file, target_file)
+            FileUtils.ln(source_file, target_file, :force => true)
           else
-            File.copy(source_file, target_file)
+            FileUtils.cp(source_file, target_file)
           end
         end
       end
@@ -52,6 +52,10 @@ module LyberUtils
     end
 
     def write_metadata_info(md_hash)
+      # make sure none of the md_hash values are nil
+      md_hash.each  do |key, value|
+        raise "The bag-info.txt value for #{key} is not allowed to be nil" if value.nil?
+      end
       payload = bag_payload()
       bag_info_hash = {
           'Bag-Size' => bag_size_human(payload[0]),

@@ -24,6 +24,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec", "~> 2.0"
   s.add_development_dependency "yard"
  
-  s.files        = Dir.glob("lib/**/*") + %w(LICENSE README.rdoc)
+  s.files        = Dir.glob("lib/**/*") + %w(LICENSE README.md)
+  s.test_files = Dir["spec/**/*"]
+
   s.require_path = 'lib'
 end

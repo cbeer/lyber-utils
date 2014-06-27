@@ -1,8 +1,9 @@
-= lyber_utils
+# lyber_utils
 
 Require the following:
+  ```ruby
   require 'lyber_utils'
-
+  ```
 
 This will give you:
   LyberUtils::BagitBag
@@ -10,22 +11,17 @@ This will give you:
   LyberUtils::FileUtilities
 
 If you do not want all 3, you can require the individual classes.  I.E. if you only want the bagit utils, then require:
+  ```ruby
   require 'lyber_utils/bagit_bag'
+  ```
 
-The BagitBag class requires the bagit gem
-  http://github.com/flazz/bagit
+The BagitBag class requires the [bagit gem](http://github.com/flazz/bagit)
 
-== Build and release procedure
-Modify the version number in lyber-utils.gemspec, then push your commits to AFS.  DO NOT TAG!
-Run: 'rake dlss_release' to tag, build, and publish the lyber-core gem
-See the Rakefile and the LyberCore::DlssRelease task in lyberteam-devel/lib/dlss/rake/dlss_release.rb
-for more details
-
-== Releases
-- <b>1.3</b> Started to use Dor::Config for workspace configuration
+## Releases
+- <b>0.1.3</b> Started to use Dor::Config for workspace configuration
 - <b>0.1.1</b> Update dependent version of nokogiri for more flexibility
 - <b>0.1.2</b> Ensure bag begins with an empty directory.  Disallow nil values in bag-info.txt properties
 
-== Copyright
+## Copyright
 
 Copyright (c) 2011 Stanford University Library. See LICENSE for details.

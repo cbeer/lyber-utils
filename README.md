@@ -1,5 +1,6 @@
 # lyber_utils
 
+[![Build Status](https://travis-ci.org/sul-dlss/lyber-utils.svg?branch=v0.1.2)](https://travis-ci.org/sul-dlss/lyber-utils)
 Require the following:
   ```ruby
   require 'lyber_utils'

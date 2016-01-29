@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "rake", ">=0.8.7"
   s.add_development_dependency "rdoc"
-  s.add_development_dependency "rspec", "~> 2.0"
+  s.add_development_dependency "rspec", "~> 3.0"
   s.add_development_dependency "yard"
  
   s.files        = Dir.glob("lib/**/*") + %w(LICENSE README.md)

@@ -27,6 +27,8 @@ describe LyberUtils::FileUtilities do
     
     it "should return an error message that includes info from stderr and stdout" do
       command = "ls /foobar"
+      status = double('status', exitstatus: -1)
+      expect(LyberUtils::FileUtilities).to receive(:systemu).with(command).and_return([status,"","ls: /foobar: No such file or directory"])
       expect { LyberUtils::FileUtilities.execute(command) }.to raise_error(RuntimeError, 'Command failed to execute: [ls /foobar] caused by <STDERR = ls: /foobar: No such file or directory>')
     end
     

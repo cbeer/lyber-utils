@@ -9,12 +9,12 @@ describe LyberUtils::ChecksumValidate do
    h2 = { 7 => 35, "c" => 2, "a" => 1 }
    h3 = { "a" => 1, "c" => 2, 7 => 35 }
    h4 = { "a" => 1, "d" => 2, "f" => 35 }
-   h1.should_not == h2   #=> false
-   h2.should == h3   #=> true
-   h3.should_not == h4   #=> false
-   LyberUtils::ChecksumValidate.compare_hashes(h1,h2).should_not == true
-   LyberUtils::ChecksumValidate.compare_hashes(h2,h3).should == true
-   LyberUtils::ChecksumValidate.compare_hashes(h3,h4).should_not == true
+   expect(h1).not_to eq(h2)   #=> false
+   expect(h2).to eq(h3)   #=> true
+   expect(h3).not_to eq(h4)   #=> false
+   expect(LyberUtils::ChecksumValidate.compare_hashes(h1,h2)).not_to eq(true)
+   expect(LyberUtils::ChecksumValidate.compare_hashes(h2,h3)).to eq(true)
+   expect(LyberUtils::ChecksumValidate.compare_hashes(h3,h4)).not_to eq(true)
   end
 
   it "should show hash differences" do
@@ -23,7 +23,7 @@ describe LyberUtils::ChecksumValidate do
     h3 = { "a" => 1, "c" => 2, 7 => 35 }
     h4 = { "a" => 1, "d" => 2, "f" => 35 }
     diff_h1_h2 = LyberUtils::ChecksumValidate.get_hash_differences(h1,h2)
-    diff_h1_h2.should == {7=>35}
+    expect(diff_h1_h2).to eq({7=>35})
   end
 
 
@@ -34,11 +34,11 @@ md5sum_output = <<MD5END
 3456789012 *file3
 MD5END
     md5_hash = LyberUtils::ChecksumValidate.md5_hash_from_md5sum(md5sum_output)
-    md5_hash.should == {
+    expect(md5_hash).to eq({
             "file1"=>"1234567890",
             "file2"=>"2345678901",
             "file3"=>"3456789012"
-    }
+    })
   end
 
   it "should parse mets xml file elements into a hash" do
@@ -72,11 +72,11 @@ mets = <<METSXML
 </METS>
 METSXML
     md5_hash = LyberUtils::ChecksumValidate.md5_hash_from_mets(mets)
-    md5_hash.should == {
+    expect(md5_hash).to eq({
             "00000001.jp2"=>"f92d161ce013474ad9eb18c741ce3f4d",
             "00000002.jp2"=>"90155884fec0a79939b8329e59ce0dfc",
             "00000003.jp2"=>"959351dc0c3dfd21d80f9f05dc9c9461"
-    }
+    })
   end
 
   it "should parse content metadata xml into a checksum hash" do
@@ -109,12 +109,12 @@ content_md = <<CONTENTMD
 </contentMetadata>
 CONTENTMD
     md5_hash = LyberUtils::ChecksumValidate.md5_hash_from_content_metadata(content_md)
-    md5_hash.should == {
+    expect(md5_hash).to eq({
             "00000001.jp2"=>"f92d161ce013474ad9eb18c741ce3f4d" ,
             "00000001.html"=>"976fbba077ae39e8633865f814f603c2",
             "00000002.jp2"=>"90155884fec0a79939b8329e59ce0dfc",
             "00000002.html"=>"7152737fb944cc16409380af582a271e" 
-    }
+    })
 
   end
 
@@ -124,10 +124,10 @@ CONTENTMD
       checksum_file = "md5file"
       checksum_cmd = "md5sum -c md5file | grep -v OK | wc -l"
       dir_save = Dir.pwd
-      Dir.should_receive(:chdir).with(directory)
-      LyberUtils::FileUtilities.should_receive(:execute).with(checksum_cmd).and_return("0")
-      Dir.should_receive(:chdir).with(dir_save)
-      LyberUtils::ChecksumValidate.verify_md5sum_checksums(directory, checksum_file).should == true
+      expect(Dir).to receive(:chdir).with(directory)
+      expect(LyberUtils::FileUtilities).to receive(:execute).with(checksum_cmd).and_return("0")
+      expect(Dir).to receive(:chdir).with(dir_save)
+      expect(LyberUtils::ChecksumValidate.verify_md5sum_checksums(directory, checksum_file)).to eq(true)
     end
   end
 

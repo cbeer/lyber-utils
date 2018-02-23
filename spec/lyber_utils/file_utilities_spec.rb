@@ -17,21 +17,21 @@ describe LyberUtils::FileUtilities do
       expect(LyberUtils::FileUtilities).to receive(:systemu).with(command).and_return([status,"some stdout",""])
       expect(LyberUtils::FileUtilities.execute(command)).to eq("some stdout")
     end
-    
+
     it "should raise error if status non-zero" do
       command = "my command"
       status = double('status', exitstatus: -1)
       expect(LyberUtils::FileUtilities).to receive(:systemu).with(command).and_return([status,"",""])
-      expect { LyberUtils::FileUtilities.execute(command) }.to raise_error /Command failed to execute/
+      expect { LyberUtils::FileUtilities.execute(command) }.to raise_error(/Command failed to execute/)
     end
-    
+
     it "should return an error message that includes info from stderr and stdout" do
       command = "ls /foobar"
       status = double('status', exitstatus: -1)
       expect(LyberUtils::FileUtilities).to receive(:systemu).with(command).and_return([status,"","ls: /foobar: No such file or directory"])
       expect { LyberUtils::FileUtilities.execute(command) }.to raise_error(RuntimeError, 'Command failed to execute: [ls /foobar] caused by <STDERR = ls: /foobar: No such file or directory>')
     end
-    
+
   end
 
   describe "transfer_object" do
@@ -57,7 +57,7 @@ describe LyberUtils::FileUtilities do
       expect(LyberUtils::FileUtilities.gpgdecrypt(workspace_dir, targzgpg, targz, passphrase)).to eq(true)
     end
   end
-  
+
   describe "unpack" do
     it "should successfully unpack a file" do
       original_dir = "mydir"
@@ -75,6 +75,4 @@ describe LyberUtils::FileUtilities do
       expect(LyberUtils::FileUtilities.unpack(original_dir, targz, destination_dir)).to eq(true)
     end
   end
-
-
 end

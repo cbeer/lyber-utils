@@ -1,8 +1,4 @@
-require 'rubygems'
-require 'rake'
 require 'bundler'
-
-Dir.glob('lib/tasks/*.rake').each { |r| import r }
 
 Bundler::GemHelper.install_tasks
 
@@ -14,15 +10,30 @@ rescue Bundler::BundlerError => e
   exit e.status_code
 end
 
-require 'rspec/core/rake_task'
+task :default => [:spec, :rubocop]
 
-desc "Run specs"
-RSpec::Core::RakeTask.new(:spec)
+begin
+  require 'rspec/core/rake_task'
+  desc 'Run RSpec'
+  RSpec::Core::RakeTask.new(:spec)
+rescue LoadError
+  desc 'Run RSpec'
+  task :spec do
+    abort 'Please install the rspec gem to run tests.'
+  end
+end
 
+begin
+  require 'rubocop/rake_task'
+  RuboCop::RakeTask.new
+rescue LoadError
+  desc 'Run rubocop'
+  task :rubocop do
+    abort 'Please install the rubocop gem to run rubocop.'
+  end
+end
 
 task :clean do
   puts 'Cleaning old coverage.data'
-  FileUtils.rm('coverage.data') if(File.exists? 'coverage.data')
+  FileUtils.rm('coverage.data') if(File.exist? 'coverage.data')
 end
-
-task :default => [:spec]

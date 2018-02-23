@@ -14,9 +14,7 @@ module LyberUtils
     end
 
     def create_bag()
-      if (File.exist?(@bag_dir))
-        FileUtils.rm_r(@bag_dir)
-      end
+      FileUtils.rm_r(@bag_dir) if File.exist?(@bag_dir)
       @bag = BagIt::Bag.new @bag_dir
     end
 
@@ -33,7 +31,7 @@ module LyberUtils
           target_file = File.join(target_dir, file)
           if File.directory?(source_file)
             copy_dir(source_file, target_file, use_links)
-          elsif (use_links)
+          elsif use_links
             FileUtils.ln(source_file, target_file, :force => true)
           else
             FileUtils.cp(source_file, target_file)
@@ -43,7 +41,7 @@ module LyberUtils
     end
 
     def add_metadata_file_from_string(metadata_string, file_name)
-      if (not metadata_string.nil?)
+      unless metadata_string.nil?
         data_file_path = "metadata/#{file_name}"
         @bag.add_file(data_file_path) do |io|
           io.puts metadata_string
@@ -58,9 +56,9 @@ module LyberUtils
       end
       payload = bag_payload()
       bag_info_hash = {
-          'Bag-Size' => bag_size_human(payload[0]),
-          'Payload-Oxum' => "#{payload[0]}.#{payload[1]}",
-          'Bagging-Date' => DateTime.now.to_s[0..9]
+        'Bag-Size' => bag_size_human(payload[0]),
+        'Payload-Oxum' => "#{payload[0]}.#{payload[1]}",
+        'Bagging-Date' => DateTime.now.to_s[0..9]
       }
       @bag.write_bag_info(md_hash.merge(bag_info_hash))
     end
@@ -69,12 +67,12 @@ module LyberUtils
       bytes = 0
       files = 0
       Find.find(@bag.data_dir) do |filepath|
-        if (not File.directory?(filepath))
+        unless File.directory?(filepath)
           bytes += File.size(filepath)
           files += 1
         end
       end
-      return [bytes, files]
+      [bytes, files]
     end
 
     def bag_size_human(bytes)
@@ -84,7 +82,7 @@ module LyberUtils
         size /= 1000.0
         count += 1
       end
-      if (count == 0)
+      if count == 0
         return sprintf("%d B", size)
       else
         return sprintf("%.2f %s", size, %w[B KB MB GB TB][count])
@@ -97,12 +95,7 @@ module LyberUtils
     end
 
     def validate()
-      if not @bag.valid?
-        raise "bag not valid: #{@bag_dir}"
-      end
-
+      raise "bag not valid: #{@bag_dir}" unless @bag.valid?
     end
-
   end
-
 end

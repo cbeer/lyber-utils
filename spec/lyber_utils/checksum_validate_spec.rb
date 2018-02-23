@@ -20,10 +20,10 @@ describe LyberUtils::ChecksumValidate do
   it "should show hash differences" do
     h1 = { "a" => 1, "c" => 2 }
     h2 = { 7 => 35, "c" => 2, "a" => 1 }
-    h3 = { "a" => 1, "c" => 2, 7 => 35 }
-    h4 = { "a" => 1, "d" => 2, "f" => 35 }
+    # h3 = { "a" => 1, "c" => 2, 7 => 35 }
+    # h4 = { "a" => 1, "d" => 2, "f" => 35 }
     diff_h1_h2 = LyberUtils::ChecksumValidate.get_hash_differences(h1,h2)
-    expect(diff_h1_h2).to eq({7=>35})
+    expect(diff_h1_h2).to eq({ 7 => 35 })
   end
 
 
@@ -113,9 +113,8 @@ CONTENTMD
             "00000001.jp2"=>"f92d161ce013474ad9eb18c741ce3f4d" ,
             "00000001.html"=>"976fbba077ae39e8633865f814f603c2",
             "00000002.jp2"=>"90155884fec0a79939b8329e59ce0dfc",
-            "00000002.html"=>"7152737fb944cc16409380af582a271e" 
+            "00000002.html"=>"7152737fb944cc16409380af582a271e"
     })
-
   end
 
   describe "verify_checksums" do
@@ -130,6 +129,4 @@ CONTENTMD
       expect(LyberUtils::ChecksumValidate.verify_md5sum_checksums(directory, checksum_file)).to eq(true)
     end
   end
-
-
 end

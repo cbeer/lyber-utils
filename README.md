@@ -1,9 +1,15 @@
+[![Build Status](https://travis-ci.org/sul-dlss/lyber-utils.svg?branch=master)](https://travis-ci.org/sul-dlss/lyber-utils)
+[![Coverage Status](https://coveralls.io/repos/github/sul-dlss/lyber-utils/badge.svg)](https://coveralls.io/github/sul-dlss/lyber-utils)
+[![Dependency Status](https://gemnasium.com/badges/github.com/sul-dlss/lyber-utils.svg)](https://gemnasium.com/github.com/sul-dlss/lyber-utils)
+[![Gem Version](https://badge.fury.io/rb/lyber-utils.svg)](https://badge.fury.io/rb/lyber-utils)
+
 # lyber_utils
 
-[![Build Status](https://travis-ci.org/sul-dlss/lyber-utils.svg?branch=v0.1.2)](https://travis-ci.org/sul-dlss/lyber-utils)
+Ruby gem.
+
 Require the following:
   ```ruby
-  require 'lyber_utils'
+  require 'lyber-utils'
   ```
 
 This will give you:

@@ -13,14 +13,13 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = ">= 1.3.6"
 
   # Runtime dependencies
-  s.add_dependency "bagit", ">=0.1.0"
-  s.add_dependency "nokogiri", ">=1.4.3.1"
-  s.add_dependency "systemu", ">= 1.2.0"
+  s.add_dependency "bagit"
+  s.add_dependency "nokogiri"
+  s.add_dependency "systemu"
   s.add_dependency "validatable"
 
-  s.add_development_dependency "rake", ">=0.8.7"
-  s.add_development_dependency "rdoc"
-  s.add_development_dependency "rspec", "~> 3.0"
+  s.add_development_dependency "rake"
+  s.add_development_dependency "rspec"
   s.add_development_dependency 'coveralls'
 
   s.files = Dir.glob("lib/**/*") + %w(LICENSE README.md)

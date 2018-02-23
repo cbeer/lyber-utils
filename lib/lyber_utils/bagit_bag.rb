@@ -58,9 +58,9 @@ module LyberUtils
       end
       payload = bag_payload()
       bag_info_hash = {
-          'Bag-Size' => bag_size_human(payload[0]),
-          'Payload-Oxum' => "#{payload[0]}.#{payload[1]}",
-          'Bagging-Date' => DateTime.now.to_s[0..9]
+        'Bag-Size' => bag_size_human(payload[0]),
+        'Payload-Oxum' => "#{payload[0]}.#{payload[1]}",
+        'Bagging-Date' => DateTime.now.to_s[0..9]
       }
       @bag.write_bag_info(md_hash.merge(bag_info_hash))
     end
@@ -100,9 +100,6 @@ module LyberUtils
       if not @bag.valid?
         raise "bag not valid: #{@bag_dir}"
       end
-
     end
-
   end
-
 end

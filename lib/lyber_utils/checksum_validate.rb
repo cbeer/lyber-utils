@@ -1,6 +1,5 @@
 require 'nokogiri'
 
-
 module LyberUtils
 
   class ChecksumValidate
@@ -19,7 +18,7 @@ module LyberUtils
     # * key is in hash2 but missing from hash1
     # @return [Hash]
     def self.get_hash_differences(hash1, hash2)
-      hash1.reject { |k, v| hash2[k] == v }.merge!(hash2.reject { |k, v| hash1.has_key?(k) })
+      hash1.reject { |k, v| hash2[k] == v }.merge!(hash2.reject { |k, _v| hash1.has_key?(k) })
     end
 
     # Generate a filename => checksum hash
@@ -77,33 +76,31 @@ module LyberUtils
       return content_md_checksum_hash
     end
 
-      # Verifies MD5 checksums for the files in a directory
-      # against the checksum values in the supplied file
-      # (Uses md5sum command)
-      #
-      # = Inputs:
-      # * directory = dirname containing the file to be checked
-      # * checksum_file = the name of the file containing the expected checksums
-      #
-      # = Return value:
-      # * The method will return true if the verification is successful.
-      # * The method will raise an exception if either the md5sum command fails,
-      # or a test of the md5sum output indicates a checksum mismatch.
-      # The exception's message will contain the explaination of the failure.
+    # Verifies MD5 checksums for the files in a directory
+    # against the checksum values in the supplied file
+    # (Uses md5sum command)
+    #
+    # = Inputs:
+    # * directory = dirname containing the file to be checked
+    # * checksum_file = the name of the file containing the expected checksums
+    #
+    # = Return value:
+    # * The method will return true if the verification is successful.
+    # * The method will raise an exception if either the md5sum command fails,
+    # or a test of the md5sum output indicates a checksum mismatch.
+    # The exception's message will contain the explaination of the failure.
     def self.verify_md5sum_checksums(directory, checksum_file)
-#      LyberCore::Log.debug("verifying checksums in #{directory}")
+      # LyberCore::Log.debug("verifying checksums in #{directory}")
       dir_save = Dir.pwd
       Dir.chdir(directory)
       checksum_cmd = 'md5sum -c ' + checksum_file + ' | grep -v OK | wc -l'
       badcount = FileUtilities.execute(checksum_cmd).to_i
-      if not (badcount==0)
+      if not (badcount == 0)
         raise "#{badcount} files had bad checksums"
       end
       return true
     ensure
       Dir.chdir(dir_save)
     end
-
   end
-
 end

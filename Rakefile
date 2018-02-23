@@ -36,5 +36,5 @@ end
 
 task :clean do
   puts 'Cleaning old coverage.data'
-  FileUtils.rm('coverage.data') if(File.exists? 'coverage.data')
+  FileUtils.rm('coverage.data') if(File.exist? 'coverage.data')
 end

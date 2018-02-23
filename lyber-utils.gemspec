@@ -18,9 +18,11 @@ Gem::Specification.new do |s|
   s.add_dependency "systemu"
   s.add_dependency "validatable"
 
+  s.add_development_dependency 'coveralls'
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec"
-  s.add_development_dependency 'coveralls'
+  s.add_development_dependency 'rubocop', '~> 0.52.1' # avoid code churn due to rubocop changes
+  s.add_development_dependency 'rubocop-rspec'
 
   s.files = Dir.glob("lib/**/*") + %w(LICENSE README.md)
   s.test_files = Dir["spec/**/*"]

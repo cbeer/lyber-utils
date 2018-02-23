@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.name        = "lyber-utils"
   s.version     = "0.1.3"
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Richard Anderson","Willy Mene","Michael Klein"]
+  s.authors     = ["Richard Anderson", "Willy Mene", "Michael Klein"]
   s.summary     = "Generic utilities used by the SULAIR Digital Library"
   s.description = "Contains classes perform generic utility functions"
 
